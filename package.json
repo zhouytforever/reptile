@@ -1,0 +1,25 @@
+{
+  "name": "reptile",
+  "version": "1.0.0",
+  "description": "craw price from JD",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "node index.js",
+    "deploy": "sh ./deploy.sh"
+  },
+  "keywords": [
+    "reptile",
+    "craw"
+  ],
+  "author": "Joyt",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.7.0",
+    "vue": "^2.6.10",
+    "vue-server-renderer": "^2.6.10"
+  },
+  "devDependencies": {
+    "eslint": "^6.0.1"
+  }
+}
