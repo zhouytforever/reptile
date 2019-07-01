@@ -13,9 +13,6 @@ module.exports = {
     })
     .catch((err) => {
       console.log(err)
-    })
-    .finally(() => {
-      console.log('完成一页连接')
     }),
   getDetailPageImgUrls: (ax, url) => ax.get(url)
     .then((res) => {
