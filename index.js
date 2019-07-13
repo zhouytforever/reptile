@@ -1,12 +1,11 @@
-// const { insertMany, openAlbum } = require('./utils/mongo')
+const { insertMany, openAlbum } = require('./utils/mongo')
 const FetchPics = require('./utils/common')
-// openAlbum((album) => insertMany(album, albumSets))
 
 const baseURL = 'https://m1.luffav.com'
-const firstPageUrl = '/art/type/id/8/page/2.html'
+const firstPageUrl = '/art/type/id/8/page/209.html'
 
 const hasNextPage = ($html, currentPath) => {
-  return !/828\.html/.test(currentPath)
+  return !/829\.html/.test(currentPath)
 }
 
 const titleProcessor = ($html) => {
@@ -16,7 +15,7 @@ const titleProcessor = ($html) => {
   return result[1] || temp
 }
 const urlProcessor = ($html) => {
-  const $imgs = $html('#wrapper > div:nth-child(6) > p:nth-child(8)  img')
+  const $imgs = $html('#wrapper > div:nth-child(6) > p:nth-child(9)  img')
   let result = []
   $imgs.each((i, e) => {
     result.push(e.attribs.src)
@@ -38,7 +37,11 @@ const processor = async (pageUrl) => {
       if (entity.key === 'no_imgs') continue
       albumList.push(entity)
     }
-    console.log(albumList)
+    if (albumList.length === 0) throw new Error('没有数据')
+    console.log('准备存入: ', albumList.map(e => e.title))
+    // 存入数据库
+    openAlbum((album) => insertMany(album, albumList))
+    // 下一页
     if (fetchPics.hasNextPage(hasNextPage)) {
       let nextPagePath = fetchPics.nextPagePath(($page) =>
         $page('.page_info  a[title="下一页"]').attr('href'))
@@ -46,6 +49,7 @@ const processor = async (pageUrl) => {
     }
   } catch (e) {
     console.log(e)
+    process.exit()
   }
 }
 processor(firstPageUrl)
